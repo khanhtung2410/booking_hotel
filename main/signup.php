@@ -12,11 +12,6 @@
 
 <body>
     <div>
-        <?php
-        if (isset($_GET['msg'])) {
-            echo "<div class='alert alert-danger' role='alert'>" . $_GET['msg'] . "</div>";
-        }
-        ?>
     </div>
     <form action="send_mail.php" method="post">
         <div class="mb-3">
