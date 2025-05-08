@@ -34,7 +34,7 @@ if ($checkin && $checkout) {
 <body>
     <h1>Rooms List</h1>
 
-    <form method="GET" action="rooms.php">
+    <form method="GET" action="json_destination/search_result.php">
         <input type="hidden" name="hotel_id" value="<?php echo $hotel_id; ?>">
 
         <label for="people">Number of People:</label>
