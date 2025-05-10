@@ -17,13 +17,12 @@ AND (? < 3 OR r.room_type = 'Double')";
 
 // SQL query to fetch available rooms based on check-in and check-out dates
 if ($checkin && $checkout) {
-    // Prepare the SQL statement 
     $stmt = $conn->prepare($sql2);
     $stmt->bind_param("ssii", $checkin, $checkout, $hotel_id, $people);
     $stmt->execute();
     $result = $stmt->get_result();
 } else {
-    // If no check-in/check-out dates are provided, fetch all rooms for the hotel
+    // if no check-in/check-out dates are provided, fetch all rooms for the hotel
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $hotel_id);
     $stmt->execute();
@@ -75,8 +74,20 @@ if ($checkin && $checkout) {
                     <td><?php echo htmlspecialchars($row['room_type']); ?></td>
                     <td><?php echo htmlspecialchars($row['price']); ?></td>
                     <td><?php echo htmlspecialchars($row['quantity']); ?></td>
-                    <td><?php echo htmlspecialchars($row['amenities']); ?></td>   
-                    <td>book</td>
+                    <td><?php echo htmlspecialchars($row['amenities']); ?></td>
+                    <?php if ($checkin && $checkout) { ?>
+                        <td>
+                            <form method="POST" action="book_room.php">
+                                <input type="hidden" name="room_id" value="<?php echo $row['id']; ?>">
+                                <input type="hidden" name="hotel_id" value="<?php echo $hotel_id; ?>">
+                                <input type="hidden" name="checkin" value="<?php echo $checkin; ?>">
+                                <input type="hidden" name="checkout" value="<?php echo $checkout; ?>">
+                                <input type="hidden" name="people" value="<?php echo $people; ?>">
+                                <button type="submit">Book Now</button>
+                            </form>
+                        </td>
+                    <?php
+                    } ?>
                 </tr>
             <?php } ?>
         </tbody>
