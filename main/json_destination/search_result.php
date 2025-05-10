@@ -9,9 +9,9 @@ $checkin = isset($_GET['checkin']) ? $_GET['checkin'] : null;
 $checkout = isset($_GET['checkout']) ? $_GET['checkout'] : null;
 $people = isset($_GET['people']) ? intval($_GET['people']) : 1;
 
-// Check if required parameters are provided
-if (!$hotel_id || !$checkin || !$checkout || !isset($_GET['people'])) {
-    echo json_encode(["success" => false, "message" => "Missing parameters"]);
+// Check if parameters are valid
+if (!strtotime($checkin) || !strtotime($checkout) || $hotel_id <= 0 || $people <= 0) {
+    echo json_encode(["success" => false, "message" => "Invalid parameters"]);
     exit;
 }
 
@@ -32,7 +32,7 @@ if ($checkin && $checkout && $people) {
     $stmt->execute();
     $result = $stmt->get_result();
 } else {
-    // If no check-in/check-out dates are provided, fetch all rooms for the hotel
+    // if no check-in/check-out dates are provided, fetch all rooms for the hotel
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $hotel_id);
     $stmt->execute();
